@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<extension xmlns="urn:newrelic-extension">
+  <instrumentation>
+    <tracerfactory name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory" metricName="Custom/RunAsync">
+      <match assemblyname="WorkerRole1" classname="WorkerRole1.WorkerRole">
+        <exactmethodmatcher methodName="RunAsync" />
+      </match>
+    </tracerfactory>
+  </instrumentation>
+</extension>

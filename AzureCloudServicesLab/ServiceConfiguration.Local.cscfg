@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="AzureCloudServicesLab" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="6" osVersion="*" schemaVersion="2015-04.2.6">
+  <Role name="WebRole1">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="NewRelic.LicenseKey" value="YourLicenseKey" />
+      <Setting name="NewRelic.AppName" value="Web Role (Cloud Services)" />
+      <Setting name="NewRelic.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="clouduser" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBnQYJKoZIhvcNAQcDoIIBjjCCAYoCAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCEE+UPgGADJCjQyvr1dVusy8wDQYJKoZIhvcNAQEBBQAEggEAKSlBOR7Va0Ycp8Q10zfAjg8TUBAv4CC814ltUX3HyGWmo58kGyGc0zhNqmKy7IPhPhyKqk5XYULqOIsQixgKGewLk8Ph3k4DloLhJsOGfw92bqakD9a4wikLJowelX5170be7zMMgR7/IFyViKXiLfF6LyRs4Kkk1EqJv3jyz31yY3tWAn14gB1HWAu6zGkbF/1x0UZ0QSH3SRHIn5US4izQ7xsW7rGqtwpYWVUzGjAYaFqjvHFp4y7+7wNhif96xw8NByz4i3DExXikSHGyclNgtRia0q7+XUFFDn5973h7AmSzyr1rQyUAlYKzIVkJf3aowRqbye81yJjlDMlVMTAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECNYnMvF9YY0EgBBCyYRxp4xA2G/E2pEzZ47H" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2021-01-12T23:59:59.0000000+09:00" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=nrlabcsstr;AccountKey=$(_nrlabcsstr.key_)" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="DA1734CE37757E405E09A35D654FC7350684E387" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
+  <Role name="WorkerRole1">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="NewRelic.LicenseKey" value="YourLicenseKey" />
+      <Setting name="NewRelic.AppName" value="Web Role (Cloud Services)" />
+      <Setting name="NewRelic.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="clouduser" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBnQYJKoZIhvcNAQcDoIIBjjCCAYoCAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCEE+UPgGADJCjQyvr1dVusy8wDQYJKoZIhvcNAQEBBQAEggEAKSlBOR7Va0Ycp8Q10zfAjg8TUBAv4CC814ltUX3HyGWmo58kGyGc0zhNqmKy7IPhPhyKqk5XYULqOIsQixgKGewLk8Ph3k4DloLhJsOGfw92bqakD9a4wikLJowelX5170be7zMMgR7/IFyViKXiLfF6LyRs4Kkk1EqJv3jyz31yY3tWAn14gB1HWAu6zGkbF/1x0UZ0QSH3SRHIn5US4izQ7xsW7rGqtwpYWVUzGjAYaFqjvHFp4y7+7wNhif96xw8NByz4i3DExXikSHGyclNgtRia0q7+XUFFDn5973h7AmSzyr1rQyUAlYKzIVkJf3aowRqbye81yJjlDMlVMTAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECNYnMvF9YY0EgBBCyYRxp4xA2G/E2pEzZ47H" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2021-01-12T23:59:59.0000000+09:00" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=nrlabcsstr;AccountKey=$(_nrlabcsstr.key_)" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="DA1734CE37757E405E09A35D654FC7350684E387" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
+</ServiceConfiguration>
