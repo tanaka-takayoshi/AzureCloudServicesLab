@@ -28,8 +28,7 @@ CALL:INSTALL_NEWRELIC_INFRA_AGENT
 IF %NR_ERROR_LEVEL% EQU 0 (
     EXIT /B 0
 ) ELSE (
-    REM EXIT %NR_ERROR_LEVEL%
-    EXIT /B 0
+    EXIT %NR_ERROR_LEVEL%
 )
 
 :: --------------
@@ -51,6 +50,10 @@ IF %NR_ERROR_LEVEL% EQU 0 (
         msiexec.exe /i %NR_INSTALLER_NAME% /norestart /quiet NR_LICENSE_KEY=%LICENSE_KEY% /lv* %RoleRoot%\nr_install-%NR_INSTALLID%.log
     )
 
+    REM generating newrelic.config from template and save to global path.
+    ECHO Generating newrelic.config from template and save to global path. >> "%RoleRoot%\nr-%NR_INSTALLID%.log" 2>&1
+    powershell -File "%RoleRoot%\approot\ConvertNewRelicConfig.ps1" -OriginalPath "%RoleRoot%\approot\newrelic.config.template" -SavePath "%NR_HOME%\newrelic.config" -NRLicenseKey %LICENSE_KEY% -NRAppName "%APP_NAME%" -NREnabled %ENABLED% >> "%RoleRoot%\nr-%NR_INSTALLID%.log" 2>&1
+    
     :: WEB ROLES : Restart the service to pick up the new environment variables
     :: 	if we are in a Worker Role then there is no need to restart W3SVC _or_
     :: 	if we are emulating locally then do not restart W3SVC
@@ -61,14 +64,7 @@ IF %NR_ERROR_LEVEL% EQU 0 (
         ECHO IIS restarted >> "%RoleRoot%\nr-%NR_INSTALLID%.log" 2>&1
     )
 
-    ECHO ERRORLEVEL %ERRORLEVEL% >> "%RoleRoot%\nr-%NR_INSTALLID%.log" 2>&1
-
-    REM ECHO Replacing webconfig >> "%RoleRoot%\nr-%NR_INSTALLID%.log" 2>&1
-    REM ECHO replacing webconfig -File "%RoleRoot%\approot\replacewebconfig.ps1" -WebConfigPath "E:\sitesroot\0\Web.config" -NRLicenseKey %LICENSE_KEY% -NRAppName "%APP_NAME%" -NREnabled %ENABLED% >> "%RoleRoot%\nr-%NR_INSTALLID%.log" 2>&1
-    REM powershell -ExecutionPolicy Unrestricted -File "%RoleRoot%\approot\replacewebconfig.ps1" -WebConfigPath "E:\sitesroot\0\Web.config" -NRLicenseKey %LICENSE_KEY% -NRAppName "%APP_NAME%" -NREnabled %ENABLED%  >> "%RoleRoot%\nr-%NR_INSTALLID%.log" 2>&1
-      
     IF %ERRORLEVEL% EQU 0 (
-      powershell -File "%RoleRoot%\approot\ConvertNewRelicConfig.ps1" -OriginalPath "%RoleRoot%\approot\newrelic.config.template" -SavePath "%NR_HOME%\newrelic.config" -NRLicenseKey %LICENSE_KEY% -NRAppName "%APP_NAME%" -NREnabled %ENABLED%
       REM  The New Relic .NET Agent installed ok and does not need to be installed again.
       ECHO New Relic .NET Agent was installed successfully. >> "%RoleRoot%\nr-%NR_INSTALLID%.log" 2>&1
 
@@ -89,14 +85,14 @@ GOTO:EOF
     ECHO %ldt% : Begin installing the New Relic Infra Agent. >> "%RoleRoot%\nri-%NR_INSTALLID%.log" 2>&1
 
     :: Current version of the installer
-    SET NR_INSTALLER_NAME=newrelic-infra.msi
+    SET NRI_INSTALLER_NAME=newrelic-infra.msi
 
     ECHO Installing the New Relic .NET Agent. >> "%RoleRoot%\nri-%NR_INSTALLID%.log" 2>&1
 
-    msiexec.exe /qn /i %NR_INSTALLER_NAME% GENERATE_CONFIG=true DISPLAY_NAME=WorkerRole1 LICENSE_KEY=%LICENSE_KEY% /lv* %RoleRoot%\nri_install-%NR_INSTALLID%.log
+    msiexec.exe /qn /i %NRI_INSTALLER_NAME% GENERATE_CONFIG=true DISPLAY_NAME=WorkerRole1 LICENSE_KEY=%LICENSE_KEY% /lv* %RoleRoot%\nri_install-%NR_INSTALLID%.log
 
     ECHO license_key: %LICENSE_KEY% > "%ProgramFiles%\New Relic\newrelic-infra\newrelic-infra.yml"
-    REM ECHO display_name: "Worker Role" >> "%ProgramFiles%\New Relic\newrelic-infra\newrelic-infra.yml"
+    ECHO display_name: %RoleInstanceID% >> "%ProgramFiles%\New Relic\newrelic-infra\newrelic-infra.yml"
     NET STOP newrelic-infra
     NET START newrelic-infra
 
