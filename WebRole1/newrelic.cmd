@@ -53,6 +53,9 @@ IF %NR_ERROR_LEVEL% EQU 0 (
     REM generating newrelic.config from template and save to global path.
     ECHO Generating newrelic.config from template and save to global path. >> "%RoleRoot%\nr-%NR_INSTALLID%.log" 2>&1
     powershell -File "%RoleRoot%\approot\ConvertNewRelicConfig.ps1" -OriginalPath "%RoleRoot%\approot\newrelic.config.template" -SavePath "%NR_HOME%\newrelic.config" -NRLicenseKey %LICENSE_KEY% -NRAppName "%APP_NAME%" -NREnabled %ENABLED% >> "%RoleRoot%\nr-%NR_INSTALLID%.log" 2>&1
+    SET WEBCONFIG_PATH = "%RoleRoot%\sitesroot\0\web.config"
+    ECHO Replacing or Adding NewRelic.AppName in %WEBCONFIG_PATH%. >> "%RoleRoot%\nr-%NR_INSTALLID%.log" 2>&1
+    powershell -File "%RoleRoot%\approot\ReplaceWebconfig.ps1" -Path "%WEBCONFIG_PATH%" -NRAppName "%APP_NAME%"
     
     :: WEB ROLES : Restart the service to pick up the new environment variables
     :: 	if we are in a Worker Role then there is no need to restart W3SVC _or_
